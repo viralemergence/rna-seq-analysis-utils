@@ -1,3 +1,6 @@
+# Singularity image folder
+singularity_image
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
