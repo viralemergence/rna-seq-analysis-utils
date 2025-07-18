@@ -18,3 +18,7 @@ singularity exec \
     python3 -u /src/app/read_preprocessing/basespace_read_collation.py \
     -basespace_dir /src/fastq \
     -collated_dir /src/fastq_collated
+
+# Run fastp on raw sequencing data
+mkdir $FASTP_DIR
+sbatch fastp_array.sh .env
