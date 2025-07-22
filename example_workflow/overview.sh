@@ -52,3 +52,16 @@ rm $GENOMES_DIR/GCF_014176215.1_mRouAeg1.p_genomic.gtf
 # Get gene counts with STAR
 mkdir $STAR_COUNTS_DIR
 sbatch star_array.sh .env
+
+# Collate and process gene counts
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $STAR_COUNTS_DIR:/src/star_counts \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/gene_count_processing/gene_count_processing.py \
+    -input_dir /src/star_counts \
+    -collated_gene_counts /src/data/collated_gene_counts.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv
