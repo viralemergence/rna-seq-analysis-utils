@@ -65,3 +65,18 @@ singularity exec \
     -input_dir /src/star_counts \
     -collated_gene_counts /src/data/collated_gene_counts.csv \
     -sample_metadata /src/data/sample_metadata_barebones.csv
+
+# Manually examine counts to determine if anything seems off
+# Samples to exclude should be marked in the metadata file by putting 1 in the blacklist column
+
+# Rectify potential batch effect from library preparation
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/gene_count_processing/batch_effect_rectification.py \
+    -gene_counts /src/data/collated_gene_counts.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv \
+    -outpath /src/data/gene_counts_final.csv
