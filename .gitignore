@@ -4,6 +4,9 @@ singularity_image
 # data folder
 data
 
+# genomes folder
+genomes
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

@@ -22,3 +22,33 @@ singularity exec \
 # Run fastp on raw sequencing data
 mkdir $FASTP_DIR
 sbatch fastp_array.sh .env
+
+# Downloading Rousettus data
+mkdir $GENOMES_DIR
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/176/215/GCF_014176215.1_mRouAeg1.p/GCF_014176215.1_mRouAeg1.p_genomic.fna.gz \
+    -P $GENOMES_DIR \
+    && gzip -d $GENOMES_DIR/GCF_014176215.1_mRouAeg1.p_genomic.fna.gz
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/176/215/GCF_014176215.1_mRouAeg1.p/GCF_014176215.1_mRouAeg1.p_genomic.gtf.gz \
+    -P $GENOMES_DIR \
+    && gzip -d $GENOMES_DIR/GCF_014176215.1_mRouAeg1.p_genomic.gtf.gz
+
+# To generate STAR genome index
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $GENOMES_DIR:/src/genomes \
+    $SINGULARITY_IMAGE \
+    STAR \
+    --runThreadN 10 --runMode genomeGenerate \
+    --genomeDir /src/genomes/rousettus/ \
+    --genomeFastaFiles /src/genomes/GCF_014176215.1_mRouAeg1.p_genomic.fna \
+    --sjdbGTFfile /src/genomes/GCF_014176215.1_mRouAeg1.p_genomic.gtf --sjdbOverhang 100 \
+    --outFileNamePrefix /src/genomes/rousettus/
+
+# Remove original files
+rm $GENOMES_DIR/GCF_014176215.1_mRouAeg1.p_genomic.fna
+rm $GENOMES_DIR/GCF_014176215.1_mRouAeg1.p_genomic.gtf
+
+# Get gene counts with STAR
+mkdir $STAR_COUNTS_DIR
+sbatch star_array.sh .env
