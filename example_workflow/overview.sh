@@ -80,3 +80,16 @@ singularity exec \
     -gene_counts /src/data/collated_gene_counts.csv \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -outpath /src/data/gene_counts_final.csv
+
+# Perform correlations between samples per cell line
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/gene_count_correlation_matrix.py \
+    -gene_counts /src/data/collated_gene_counts.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv \
+    -cell_lines R06E \
+    -outdir /src/data/correlations
