@@ -93,3 +93,17 @@ singularity exec \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -cell_lines R06E \
     -outdir /src/data/correlations
+
+# Calculate contrasts between viruses, per cell line, per time point
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/calculate_virus_contrasts_per_time.py \
+    -gene_counts /src/data/collated_gene_counts.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv \
+    -cell_lines R06E \
+    -virus_contrasts MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
+    -outdir /src/data/contrasts
