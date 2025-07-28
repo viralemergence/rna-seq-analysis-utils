@@ -122,7 +122,7 @@ singularity exec \
     $SINGULARITY_IMAGE \
     python3 -u /src/app/goatools_analysis_coarse.py \
     -gene_contrast_path /src/data/contrasts/R06E_virus_contrasts_per_time.csv \
-    -contrast MR766_vs_No_Virus \
+    -contrast MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
     -expression_direction up \
     -taxon_id 9407 \
     -background_genes /src/data/goea/reference_files/ncbi_gene_results_9407.txt \

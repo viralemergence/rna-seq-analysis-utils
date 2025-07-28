@@ -24,6 +24,7 @@ def suppress_stdout_stderr():
 class GeneCountContrastManager:
     def __init__(self, gene_count_contrasts_path: Path) -> None:
         self.gene_count_contrasts = self.extract_count_contrasts(gene_count_contrasts_path)
+        self.cell_line = gene_count_contrasts_path.name.split("_")[0]
 
     @staticmethod
     def extract_count_contrasts(count_contrasts: Path) -> pd.DataFrame:
@@ -347,7 +348,7 @@ class GoatoolsResultsGrapher():
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-gene_contrast_path", type=str, required=True)
-    parser.add_argument("-contrast", type=str, required=True)
+    parser.add_argument("-contrasts", nargs="+", required=True)
     parser.add_argument("-expression_direction", type=str, required=True)
     parser.add_argument("-taxon_id", type=int, required=True)
     parser.add_argument("-background_genes", type=str, required=True)
@@ -355,17 +356,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     gccm = GeneCountContrastManager(Path(args.gene_contrast_path))
-    degs = gccm.run(args.contrast, args.expression_direction)
-    print(len(degs))
+    for contrast in args.contrasts:
+        degs = gccm.run(contrast, args.expression_direction)
 
-    outpath = Path(args.goea_dir) / "coarse_results" / f"{args.contrast}_{args.expression_direction}_goea_coarse.csv"
+        outpath = Path(args.goea_dir) / "coarse_results" / f"{gccm.cell_line}_{contrast}_{args.expression_direction}_goea_coarse.csv"
 
-    gm = GoatoolsManager(args.taxon_id, Path(args.background_genes), Path(args.goea_dir), outpath)
-    gm.setup()
-    results = gm.run(degs)
-    
-    grm = GoatoolsResultsManager(args.taxon_id, Path(args.background_genes), Path(args.goea_dir), outpath)
-    grm.run(results)
-    
-    grg = GoatoolsResultsGrapher()
-    grg.run(grm.outpath, args.contrast)
+        gm = GoatoolsManager(args.taxon_id, Path(args.background_genes), Path(args.goea_dir), outpath)
+        gm.setup()
+        results = gm.run(degs)
+        
+        grm = GoatoolsResultsManager(args.taxon_id, Path(args.background_genes), Path(args.goea_dir), outpath)
+        grm.run(results)
+        
+        grg = GoatoolsResultsGrapher()
+        grg.run(grm.outpath, contrast)
