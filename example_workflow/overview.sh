@@ -89,7 +89,7 @@ singularity exec \
     --bind $DATA_DIR:/src/data \
     $SINGULARITY_IMAGE \
     python3 -u /src/app/gene_count_correlation_matrix.py \
-    -gene_counts /src/data/collated_gene_counts.csv \
+    -gene_counts /src/data/gene_counts_final.csv \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -cell_lines R06E \
     -outdir /src/data/correlations
@@ -102,7 +102,7 @@ singularity exec \
     --bind $DATA_DIR:/src/data \
     $SINGULARITY_IMAGE \
     python3 -u /src/app/calculate_virus_contrasts_per_time.py \
-    -gene_counts /src/data/collated_gene_counts.csv \
+    -gene_counts /src/data/gene_counts_final.csv \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -cell_lines R06E \
     -virus_contrasts MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
@@ -127,3 +127,15 @@ singularity exec \
     -taxon_id 9407 \
     -background_genes /src/data/goea/reference_files/ncbi_gene_results_9407.txt \
     -goea_dir /src/data/goea
+
+# Cluster DEGs into patterns
+singularity exec --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/deg_patterns/degpattern_orchestration.py \
+    -gene_counts /src/data/gene_counts_final.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv \
+    -gene_contrast_path /src/data/contrasts/R06E_virus_contrasts_per_time.csv \
+    -cell_line R06E -outdir /src/data/deg_patterns/R_output
