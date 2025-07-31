@@ -139,3 +139,18 @@ singularity exec --pwd /src \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -gene_contrast_path /src/data/contrasts/R06E_virus_contrasts_per_time.csv \
     -cell_line R06E -outdir /src/data/deg_patterns/R_output
+
+# TODO: ADD CODE FOR MAKING GRAPHS OF GROUP CLUSTERS!
+
+# Perform GOEA on gene clusters
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/goatools_analysis_degpatterns.py \
+    -gene_clusters_dir /src/data/deg_patterns/R_output \
+    -taxon_id 9407 \
+    -background_genes /src/data/goea/reference_files/ncbi_gene_results_9407.txt \
+    -goea_dir /src/data/goea
