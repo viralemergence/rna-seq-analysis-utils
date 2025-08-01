@@ -324,7 +324,7 @@ if __name__ == "__main__":
     gcm = GeneClusterManager(Path(args.gene_clusters_dir))
     for gene_cluster_path in gcm.gene_cluster_paths:
         gene_clusters = gcm.extract_gene_clusters(gene_cluster_path)
-        outdir = Path(args.goea_dir) / "deg_patterns" / gene_cluster_path.stem.replace("_gene_clusters.csv", "")
+        outdir = Path(args.goea_dir) / "deg_patterns" / gene_cluster_path.name.replace("_gene_clusters.csv", "")
         if not outdir.is_dir():
             outdir.mkdir()
 
