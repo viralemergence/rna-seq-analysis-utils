@@ -58,7 +58,6 @@ class CalculateContrasts:
 
             collated_df = pd.concat(contrast_results, axis=1)
             collated_df.columns = contrast_labels
-            collated_df = collated_df.round(6)
             print("\nSaving collated results")
             print(collated_df)
             
