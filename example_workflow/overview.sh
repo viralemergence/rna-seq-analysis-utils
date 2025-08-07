@@ -108,6 +108,18 @@ singularity exec \
     -virus_contrasts MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
     -outdir /src/data/contrasts
 
+# Gene over representation analysis (ORA)
+singularity exec \
+    --pwd /src \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/gene_over_representation_analysis.py \
+    -gene_contrast_path /src/data/contrasts/R06E_virus_contrasts_per_time.csv \
+    -contrast MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
+    -expression_direction up \
+    -outdir /src/data/gora
+
 # Get "background genes" for gene ontology enrichment analysis (GOEA)
     # Go to: https://www.ncbi.nlm.nih.gov/gene
     # For Rousettus search: "9407"[Taxonomy ID] AND alive[property] AND genetype protein coding[Properties]
