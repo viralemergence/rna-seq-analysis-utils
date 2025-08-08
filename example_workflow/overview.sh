@@ -132,7 +132,7 @@ singularity exec \
     --bind $APP_DIR:/src/app \
     --bind $DATA_DIR:/src/data \
     $SINGULARITY_IMAGE \
-    python3 -u /src/app/goatools_analysis_coarse.py \
+    python3 -u /src/app/goatools/goatools_analysis_coarse.py \
     -gene_contrast_path /src/data/contrasts/R06E_virus_contrasts_per_time.csv \
     -contrast MR766_vs_No_Virus PRVABC59_vs_No_Virus MR766_vs_PRVABC59 \
     -expression_direction up \
@@ -159,7 +159,7 @@ singularity exec \
     --bind $APP_DIR:/src/app \
     --bind $DATA_DIR:/src/data \
     $SINGULARITY_IMAGE \
-    python3 -u /src/app/gene_relative_abundance.py \
+    python3 -u /src/app/deg_patterns/gene_relative_abundance.py \
     -gene_counts /src/data/gene_counts_final.csv \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -gene_clusters_dir /src/data/deg_patterns/R_output \
@@ -172,7 +172,7 @@ singularity exec \
     --bind $APP_DIR:/src/app \
     --bind $DATA_DIR:/src/data \
     $SINGULARITY_IMAGE \
-    python3 -u /src/app/goatools_analysis_degpatterns.py \
+    python3 -u /src/app/goatools/goatools_analysis_degpatterns.py \
     -gene_clusters_dir /src/data/deg_patterns/R_output \
     -taxon_id 9407 \
     -background_genes /src/data/goea/reference_files/ncbi_gene_results_9407.txt \
