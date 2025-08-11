@@ -81,6 +81,21 @@ singularity exec \
     -sample_metadata /src/data/sample_metadata_barebones.csv \
     -outpath /src/data/gene_counts_final.csv
 
+# Perform PCA per cell line
+singularity exec \
+    --pwd /src \
+    --no-home \
+    --bind $APP_DIR:/src/app \
+    --bind $DATA_DIR:/src/data \
+    $SINGULARITY_IMAGE \
+    python3 -u /src/app/principal_component_analysis.py \
+    -gene_counts /src/data/gene_counts_final.csv \
+    -sample_metadata /src/data/sample_metadata_barebones.csv \
+    -cell_lines R06E \
+    -treatments MR766 PRVABC59 \
+    -control No_Virus \
+    -outdir /src/data/pca
+
 # Perform correlations between samples per cell line
 singularity exec \
     --pwd /src \
