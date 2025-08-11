@@ -78,7 +78,7 @@ class GeneRelativeAbundance:
         subplot_columns = 3
         subplot_rows = int(ceil(desired_subplots / subplot_columns))
         figure_height = 2 * subplot_rows
-        combined_fig, combined_ax = plt.subplots(subplot_rows, subplot_columns, figsize=(6.4, figure_height)) # NOTE: Will want to change figsize or make arg
+        combined_fig, combined_ax = plt.subplots(subplot_rows, subplot_columns, figsize=(6.4, figure_height))
         for i, (group, genes) in enumerate(genes_of_interest.items()):
             subplot_row = i // subplot_columns
             subplot_column = i % subplot_columns
